@@ -3,3 +3,4 @@ vunit_hdl @ git+https://github.com/VUnit/vunit.git@2d2e21c6422c12992318f04c41d20
 # The Python bridge, not yet on PyPI
 vunit-python-bridge @ git+https://github.com/VUnit/vunit-python-bridge.git@8e23a341472d4d47d6a3cf57e8e8410fb6a8001b
 numpy
+hypothesis

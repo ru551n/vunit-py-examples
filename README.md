@@ -6,6 +6,7 @@ VHDL testbenches that call Python while they simulate, using
 | Example | Shows |
 | --- | --- |
 | [fir](fir) | A FIR filter checked sample by sample against a NumPy model that also generates the stimuli |
+| [hypothesis](hypothesis) | Hypothesis finding and shrinking a bug in a saturating adder (fails by design) |
 
 ## Requirements
 
