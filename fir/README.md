@@ -7,7 +7,6 @@ AXI-stream verification components drive the stimuli into the filter and check e
 src/fir.vhd       the design: a 4-tap FIR filter
 tb/tb_fir.vhd     the testbench
 tb/model.py       the NumPy model
-run.py            the VUnit run script
 ```
 
 ## Run it
@@ -15,15 +14,15 @@ run.py            the VUnit run script
 Set up the environment as described in the [top-level README](../README.md), then:
 
 ```bash
-python fir/run.py
+python run.py
 ```
 
 Change `COEFFS` in `tb/model.py` and the test fails with a `TDATA mismatch`. VUnit picks a new seed,
-and so new stimuli, on every run; `python fir/run.py --seed repeat` reruns the last one.
+and so new stimuli, on every run; `python run.py --seed repeat` reruns the last one.
 
 ## How it works
 
-`run.py` adds the bridge as a VUnit package:
+`run.py` in the repository root adds the bridge as a VUnit package:
 
 ```python
 vu.add_package("vunit-python-bridge", allow_setup=True)
