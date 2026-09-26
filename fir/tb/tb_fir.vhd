@@ -37,6 +37,7 @@ begin
       push_axi_stream(net, master, std_logic_vector(to_signed(get(stimuli, i), 8)));
       check_axi_stream(net, slave, std_logic_vector(to_signed(get(expected, i), 32)), blocking => false);
     end loop;
+    wait_until_idle(net, as_sync(master));
     wait_until_idle(net, as_sync(slave));
 
     test_runner_cleanup(runner);
