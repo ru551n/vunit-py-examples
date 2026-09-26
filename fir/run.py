@@ -6,7 +6,7 @@ root = Path(__file__).parent
 
 vu = VUnit.from_argv()
 vu.add_vhdl_builtins()
-# allow_setup lets the package build its native bridge library for the simulator
+vu.add_verification_components()
 vu.add_package("vunit-python-bridge", allow_setup=True)
 
 lib = vu.add_library("lib")

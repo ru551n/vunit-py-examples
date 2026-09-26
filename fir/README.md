@@ -1,14 +1,12 @@
 # FIR filter checked against a NumPy model
 
-A VHDL testbench that calls Python while it simulates, using
-[vunit-python-bridge](https://github.com/VUnit/vunit-python-bridge). The testbench asks a NumPy
-model for random stimuli and the expected output of a FIR filter, drives the filter with the
-stimuli and checks every output sample against the model.
+The testbench asks a NumPy model for random stimuli and the expected output of a FIR filter. VUnit's
+AXI-stream verification components drive the stimuli into the filter and check every output sample.
 
 ```
 src/fir.vhd       the design: a 4-tap FIR filter
-tb/tb_fir.vhd     the VUnit testbench, calling Python through python_bridge
-tb/model.py       the NumPy reference model
+tb/tb_fir.vhd     the testbench
+tb/model.py       the NumPy model
 run.py            the VUnit run script
 ```
 
@@ -17,17 +15,11 @@ run.py            the VUnit run script
 Set up the environment as described in the [top-level README](../README.md), then:
 
 ```bash
-python fir/run.py                # VUNIT_SIMULATOR=ghdl python fir/run.py to pick GHDL
+python fir/run.py
 ```
 
-Both tests pass. To see the model catch a bug, change `COEFFS` in `tb/model.py` and run again:
-
-```
-ERROR - sample 3 - Got ... Expected ...
-```
-
-VUnit picks a new seed on every run, so the stimuli change each time. Rerun a failure with the same
-stimuli using `python fir/run.py --seed repeat`.
+Change `COEFFS` in `tb/model.py` and the test fails with a `TDATA mismatch`. VUnit picks a new seed,
+and so new stimuli, on every run; `python fir/run.py --seed repeat` reruns the last one.
 
 ## How it works
 
@@ -41,6 +33,6 @@ The testbench loads the model and calls it. `integer_array_t` values cross as Nu
 
 ```vhdl
 import_module_from_file(join(tb_path(runner_cfg), "model.py"), "model");
-stimuli <= call_integer_array("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
-expected <= call_integer_array("model.fir", arg(stimuli));
+stimuli := call_integer_array("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
+expected := call_integer_array("model.fir", arg(stimuli));
 ```
