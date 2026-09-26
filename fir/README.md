@@ -32,6 +32,6 @@ The testbench loads the model and calls it. `integer_array_t` values cross as Nu
 
 ```vhdl
 import_module_from_file(join(tb_path(runner_cfg), "model.py"), "model");
-stimuli := call_integer_array("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
-expected := call_integer_array("model.fir", arg(stimuli));
+stimuli := call("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
+expected := call("model.fir", arg(stimuli));
 ```

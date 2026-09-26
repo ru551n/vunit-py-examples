@@ -30,8 +30,8 @@ begin
     test_runner_setup(runner, runner_cfg);
 
     import_module_from_file(join(tb_path(runner_cfg), "model.py"), "model");
-    stimuli := call_integer_array("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
-    expected := call_integer_array("model.fir", arg(stimuli));
+    stimuli := call("model.stimuli", arg(1000), arg_unsigned(get_seed(runner_cfg)));
+    expected := call("model.fir", arg(stimuli));
 
     for i in 0 to length(stimuli) - 1 loop
       push_axi_stream(net, master, std_logic_vector(to_signed(get(stimuli, i), 8)));
