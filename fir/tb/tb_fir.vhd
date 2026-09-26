@@ -44,12 +44,24 @@ begin
   end process;
 
   axi_stream_master_inst : entity vunit_lib.axi_stream_master
-    generic map(master => master)
-    port map(aclk => clk, tvalid => in_valid, tdata => in_data);
+    generic map(
+      master => master
+    )
+    port map(
+      aclk => clk,
+      tvalid => in_valid,
+      tdata => in_data
+    );
 
   axi_stream_slave_inst : entity vunit_lib.axi_stream_slave
-    generic map(slave => slave)
-    port map(aclk => clk, tvalid => out_valid, tdata => out_data);
+    generic map(
+      slave => slave
+    )
+    port map(
+      aclk => clk,
+      tvalid => out_valid,
+      tdata => out_data
+    );
 
   dut : entity work.fir
     port map(
