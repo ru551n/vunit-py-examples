@@ -23,7 +23,8 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Then run all examples with `python run.py`.
+Then run all examples with `python run.py`. Each example compiles into a library named after its
+folder, so `python run.py "fir.*"` runs one.
 
 `requirements.txt` pins VUnit and the bridge to git commits, since neither the VUnit release with
 package support nor the bridge is on PyPI yet.
