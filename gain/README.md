@@ -1,11 +1,12 @@
 # Calling a Python function from VHDL
 
-The smallest example: the testbench loads a Python file and calls a function in it with a positional
-and a keyword argument, then checks the result.
+The smallest example, self-contained in this folder: the testbench loads a Python file and calls a
+function in it with a positional and a keyword argument, then checks the result.
 
 ```
-tb/tb_gain.vhd   the testbench
-tb/gain.py       the Python function
+tb_gain.vhd   the testbench
+gain.py       the Python function
+run.py        the VUnit run script
 ```
 
 ## Run it
@@ -13,10 +14,19 @@ tb/gain.py       the Python function
 Set up the environment as described in the [top-level README](../README.md), then:
 
 ```bash
-python run.py "gain.*"
+python gain/run.py
 ```
 
 ## How it works
+
+`run.py` adds the bridge as a VUnit package:
+
+```python
+vu.add_package("vunit-python-bridge", allow_setup=True)
+```
+
+`allow_setup=True` lets the package configure the simulator and build its native interface where
+needed.
 
 `gain.py` is plain Python:
 
