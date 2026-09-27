@@ -1,5 +1,4 @@
 vunit_hdl>=5.0.0.dev13
-# The Python bridge, not yet on PyPI
-vunit-python-bridge @ git+https://github.com/VUnit/vunit-python-bridge.git@8e23a341472d4d47d6a3cf57e8e8410fb6a8001b
+vunit-python-bridge>=0.1.0
 numpy
 hypothesis
