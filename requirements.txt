@@ -2,3 +2,4 @@ vunit_hdl>=5.0.0.dev13
 vunit-python-bridge>=0.1.0
 numpy
 hypothesis
+unicorn

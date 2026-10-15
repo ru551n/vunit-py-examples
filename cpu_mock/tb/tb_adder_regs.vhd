@@ -5,8 +5,8 @@ context vunit_lib.vc_context;
 library ieee;
 use ieee.std_logic_1164.all;
 
--- The firmware in ../firmware runs on the CPU mock and accesses adder_regs through VUnit's
--- AXI-Lite master.
+-- The firmware in ../firmware runs on the CPU mock, natively or as an RV32 binary in Unicorn, and
+-- accesses adder_regs through VUnit's AXI-Lite master.
 entity tb_adder_regs is
   generic(runner_cfg : string);
 end entity;
@@ -15,7 +15,7 @@ architecture tb of tb_adder_regs is
   constant bus_handle : bus_master_t := new_bus(data_length => 32, address_length => 32);
 
   signal clk : std_logic := '0';
-  signal done : boolean;
+  signal start, rv32, done : boolean := false;
   signal awvalid, awready, wvalid, wready, bvalid, bready : std_logic;
   signal arvalid, arready, rvalid, rready : std_logic;
   signal awaddr, araddr, wdata, rdata : std_logic_vector(31 downto 0);
@@ -26,7 +26,15 @@ begin
   main : process
   begin
     test_runner_setup(runner, runner_cfg);
-    wait until done;
+    while test_suite loop
+      if run("Test native firmware") then
+        rv32 <= false;
+      elsif run("Test RV32 firmware on Unicorn") then
+        rv32 <= true;
+      end if;
+      start <= true;
+      wait until done;
+    end loop;
     test_runner_cleanup(runner);
   end process;
 
@@ -40,6 +48,8 @@ begin
       python_dir => tb_path(runner_cfg)
     )
     port map(
+      start => start,
+      rv32 => rv32,
       done => done
     );
 

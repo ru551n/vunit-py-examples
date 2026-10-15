@@ -20,6 +20,9 @@ entity cpu_mock is
     python_dir : string
   );
   port(
+    -- The firmware starts once start is true: natively, or as an RV32 binary in Unicorn
+    start : in boolean := true;
+    rv32 : in boolean := false;
     -- The firmware has returned
     done : out boolean := false
   );
@@ -35,8 +38,15 @@ begin
     variable value : integer := 0;
     variable data : std_logic_vector(31 downto 0);
   begin
+    if not start then
+      wait until start;
+    end if;
     import_module_from_file(join(python_dir, "cpu_mock.py"), "cpu_mock");
-    exec("cpu = " & to_call_str("cpu_mock.CpuMock", arg(firmware_dir), arg(build_dir)));
+    if rv32 then
+      exec("cpu = " & to_call_str("cpu_mock.CpuMock", arg(firmware_dir), arg(build_dir), arg("rv32")));
+    else
+      exec("cpu = " & to_call_str("cpu_mock.CpuMock", arg(firmware_dir), arg(build_dir), arg("native")));
+    end if;
     loop
       request := call_integer_vector("cpu.step", arg(value));
       case request(0) is
